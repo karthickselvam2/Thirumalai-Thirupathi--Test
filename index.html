@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<title>திருமலை பாதயாத்திரை பதிவு</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@500;600;700;800&family=Catamaran:wght@400;500;600;700;800&display=swap">
+<style>
+  :root {
+    --ground: #FBF2DE;
+    --surface: #FFFDF7;
+    --surface-soft: #F7ECD6;
+    --ink: #2A2036;
+    --ink-soft: #5B4F6B;
+    --maroon: #96253B;
+    --maroon-strong: #7C1E30;
+    --gold: #C68A1D;
+    --gold-soft: #E7C878;
+    --green: #1E6B46;
+    --border: #D8C397;
+    --focus: #96253B;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #1C1420;
+      --surface: #241A2B;
+      --surface-soft: #2E2235;
+      --ink: #F2E9D8;
+      --ink-soft: #C9BBD6;
+      --maroon: #E0566E;
+      --maroon-strong: #EB7389;
+      --gold: #E0A83A;
+      --gold-soft: #F3CE82;
+      --green: #45B57F;
+      --border: #4A3A52;
+      --focus: #E0A83A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #1C1420;
+    --surface: #241A2B;
+    --surface-soft: #2E2235;
+    --ink: #F2E9D8;
+    --ink-soft: #C9BBD6;
+    --maroon: #E0566E;
+    --maroon-strong: #EB7389;
+    --gold: #E0A83A;
+    --gold-soft: #F3CE82;
+    --green: #45B57F;
+    --border: #4A3A52;
+    --focus: #E0A83A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 60px;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Catamaran", sans-serif;
+  }
+  .wrap { max-width: 680px; margin: 0 auto; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  header.card { text-align: center; }
+  header h1 {
+    font-family: "Baloo Thambi 2", sans-serif;
+    color: var(--maroon);
+    font-size: 2em;
+    margin: 6px 0 4px;
+    text-wrap: balance;
+  }
+  header .address { margin: 2px 0; color: var(--ink-soft); font-size: 0.95em; }
+  header .phones { margin: 2px 0 14px; color: var(--maroon); font-weight: 700; font-size: 0.95em; }
+  .banner {
+    background: var(--green);
+    color: #FBF2DE;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+  .banner .dates { display: block; margin-top: 4px; color: var(--gold-soft); font-weight: 700; }
+
+  h2.section-title {
+    font-family: "Baloo Thambi 2", sans-serif;
+    background: var(--maroon);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    margin: 24px 0 14px;
+  }
+  .row { display: flex; gap: 16px; flex-wrap: wrap; }
+  .row > label { flex: 1; min-width: 200px; }
+  label {
+    display: block;
+    margin-bottom: 14px;
+    font-weight: 600;
+    font-size: 0.95em;
+    color: var(--ink);
+  }
+  input[type=text], input[type=tel], input[type=date], textarea, select {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+    padding: 9px 10px;
+    font-size: 1em;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-weight: 400;
+    background: var(--surface);
+    color: var(--ink);
+  }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+  textarea { resize: vertical; min-height: 56px; }
+  input[inputmode=numeric] { font-variant-numeric: tabular-nums; }
+
+  .self-details { display: flex; gap: 20px; flex-wrap: wrap; }
+  .self-details .fields { flex: 1 1 320px; }
+  .photo-box { width: 150px; flex-shrink: 0; }
+  .photo-box .frame {
+    width: 150px; height: 180px;
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    background: var(--surface-soft);
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden; margin-bottom: 8px;
+  }
+  .photo-box img { max-width: 100%; max-height: 100%; display: none; }
+  .photo-box .placeholder { color: var(--ink-soft); font-size: 0.8em; text-align: center; padding: 8px; }
+  input[type=file] { font-size: 0.85em; color: var(--ink-soft); }
+
+  /* Right-aligned signature layout */
+  .signature-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 15px;
+  }
+  .signature-box {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .sig-pad {
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--surface-soft);
+    width: 100%; height: 140px;
+    touch-action: none; display: block;
+  }
+  .sig-controls { 
+    margin: 6px 0 16px; 
+    display: flex; 
+    justify-content: flex-end;
+  }
+  .sig-controls button {
+    width: auto;
+    padding: 6px 14px;
+    font-size: 0.9em;
+  }
+
+  .declaration-text {
+    background: var(--surface-soft);
+    border: 1px solid var(--gold-soft);
+    padding: 14px;
+    border-radius: 8px;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+  .declaration-accept { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .declaration-accept input { width: auto; margin: 0; }
+
+  .actions { margin-top: 22px; }
+  button {
+    background: var(--maroon);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: "Catamaran", sans-serif;
+    width: 100%;
+  }
+  button.secondary { background: var(--ink-soft); }
+  button:hover { filter: brightness(0.95); }
+  button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  #resultPanel { display: none; }
+  #resultPanel h2.section-title { background: var(--green); }
+  .result-note {
+    font-size: 0.9em;
+    color: var(--ink-soft);
+    text-align: center;
+    margin: 10px 0 18px;
+  }
+  .card-image-wrap {
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface-soft);
+  }
+  .card-image-wrap img { max-width: 100%; display: block; margin: 0 auto; }
+
+  .download-row { display: flex; gap: 12px; margin: 16px 0; }
+  .download-row button { width: 100%; }
+
+  details.summary-toggle { margin-top: 18px; }
+  details.summary-toggle summary {
+    cursor: pointer; font-weight: 700; color: var(--maroon);
+    padding: 8px 0;
+  }
+  .summary-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.92em; }
+  .summary-table td { border: 1px solid var(--border); padding: 7px 10px; }
+  .summary-table td:first-child { font-weight: 700; width: 45%; background: var(--surface-soft); }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="card" style="padding:0; overflow:hidden;">
+    <div class="banner">
+      <div>திருமலை பாதயாத்திரை பதிவு</div>
+      <span class="dates">ஓம் நமோ நாராயணாய</span>
+    </div>
+  </header>
+
+  <form id="registrationForm" class="card">
+    <h2 class="section-title">அடிப்படை விவரங்கள்</h2>
+
+    <div class="self-details">
+      <div class="fields">
+        <label>
+          பெயர் (Name):
+          <input type="text" id="name" required placeholder="முழுப் பெயர்">
+        </label>
+        
+        <div class="row">
+          <label>
+            அலைபேசி எண் (Mobile):
+            <input type="tel" id="phone" required placeholder="10 இலக்க எண்">
+          </label>
+          <label>
+            பிறந்த தேதி (DOB):
+            <input type="date" id="dob" required>
+          </label>
+        </div>
+
+        <label>
+          பாதயாத்திரை எண்ணிக்கை (Trip Count):
+          <select id="tripCount" required>
+            <option value="" disabled selected>தேர்ந்தெடுக்கவும்</option>
+            <option value="01">01</option>
+            <option value="02">02</option>
+            <option value="03">03</option>
+            <option value="04">04</option>
+            <option value="05">05</option>
+            <option value="06">06</option>
+            <option value="07">07</option>
+            <option value="08">08</option>
+            <option value="09">09</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="photo-box">
+        <div class="frame" id="photoFrame">
+          <span class="placeholder">புகைப்படம் பதிவேற்றவும்</span>
+          <img id="photoPreview" alt="Profile Photo">
+        </div>
+        <input type="file" id="photoInput" accept="image/*">
+      </div>
+    </div>
+
+    <label>
+      முகவரி (Address):
+      <textarea id="address" required placeholder="தற்போதைய முகவரி"></textarea>
+    </label>
+
+    <h2 class="section-title">உறுதிமொழி & கையொப்பம்</h2>
+    
+    <div class="declaration-text">
+      மேற்கண்ட விவரங்கள் அனைத்தும் உண்மை எனவும், பாதயாத்திரையின் அனைத்து வழிமுறைகளுக்கும் முழு ஒத்துழைப்பு வழங்குவேன் எனவும் உறுதி கூறுகிறேன்.
+    </div>
+    
+    <label class="declaration-accept">
+      <input type="checkbox" id="declaration" required>
+      விதிமுறைகளை ஏற்றுக்கொள்கிறேன்
+    </label>
+
+    <div class="signature-container">
+      <div class="signature-box">
+        <label style="text-align: right;">விண்ணப்பதாரர் கையொப்பம்:</label>
+        <canvas id="sigCanvas" class="sig-pad"></canvas>
+        <div class="sig-controls">
+          <button type="button" class="secondary" id="clearSigBtn">கையொப்பத்தை அழிக்க</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" id="generateBtn">பதிவு செய்து அட்டையை உருவாக்கவும்</button>
+    </div>
+  </form>
+
+  <div id="resultPanel" class="card">
+    <h2 class="section-title">அட்டை தயார்</h2>
+    <p class="result-note">கீழே உள்ள பொத்தானைக் கிளிக் செய்து உங்கள் அட்டையை பதிவிறக்கலாம்.</p>
+
+    <div class="card-image-wrap">
+      <img id="generatedCardImage" alt="Generated ID Card">
+    </div>
+
+    <div class="download-row">
+      <button type="button" id="downloadJpgBtn">Download JPG</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Signature Canvas Logic
+  const canvas = document.getElementById('sigCanvas');
+  const ctx = canvas.getContext('2d');
+  let isDrawing = false;
+
+  function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    ctx.scale(ratio, ratio);
+    ctx.strokeStyle = '#2A2036';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  function startDrawing(e) {
+    isDrawing = true;
+    draw(e);
+  }
+  function stopDrawing() {
+    isDrawing = false;
+    ctx.beginPath();
+  }
+  function draw(e) {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+    const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+
+    ctx.lineTo(x, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    e.preventDefault();
+  }
+
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  window.addEventListener('mouseup', stopDrawing);
+
+  canvas.addEventListener('touchstart', startDrawing);
+  canvas.addEventListener('touchmove', draw);
+  window.addEventListener('touchend', stopDrawing);
+
+  document.getElementById('clearSigBtn').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+
+  // Photo Preview
+  const photoInput = document.getElementById('photoInput');
+  const photoPreview = document.getElementById('photoPreview');
+  const photoPlaceholder = document.querySelector('.photo-box .placeholder');
+
+  photoInput.addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        photoPreview.src = e.target.result;
+        photoPreview.style.display = 'block';
+        photoPlaceholder.style.display = 'none';
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Generate Card Logic
+  document.getElementById('generateBtn').addEventListener('click', () => {
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const tripCount = document.getElementById('tripCount').value;
+    const declaration = document.getElementById('declaration').checked;
+
+    if (!name || !phone || !tripCount || !declaration) {
+      alert("தயவுசெய்து அனைத்து விவரங்களையும் பூர்த்தி செய்து உறுதிமொழியை ஏற்கவும்.");
+      return;
+    }
+
+    // Mock Card Generation on an offscreen Canvas
+    const cardCanvas = document.createElement('canvas');
+    cardCanvas.width = 600;
+    cardCanvas.height = 400;
+    const cCtx = cardCanvas.getContext('2d');
+
+    cCtx.fillStyle = '#FFFDF7';
+    cCtx.fillRect(0, 0, 600, 400);
+
+    // Border
+    cCtx.strokeStyle = '#96253B';
+    cCtx.lineWidth = 6;
+    cCtx.strokeRect(10, 10, 580, 380);
+
+    // Header
+    cCtx.fillStyle = '#96253B';
+    cCtx.fillRect(10, 10, 580, 60);
+    cCtx.fillStyle = '#FFFFFF';
+    cCtx.font = 'bold 24px sans-serif';
+    cCtx.textAlign = 'center';
+    cCtx.fillText('திருமலை பாதயாத்திரை பதிவு அட்டை', 300, 48);
+
+    // Details Text
+    cCtx.fillStyle = '#2A2036';
+    cCtx.font = '20px sans-serif';
+    cCtx.textAlign = 'left';
+    cCtx.fillText(`பெயர்: ${name}`, 40, 130);
+    cCtx.fillText(`அலைபேசி: ${phone}`, 40, 180);
+    cCtx.fillText(`பாதயாத்திரை எண்ணிக்கை: ${tripCount}`, 40, 230);
+
+    // Render uploaded photo if present
+    if (photoPreview.src) {
+      cCtx.drawImage(photoPreview, 420, 100, 130, 150);
+    }
+
+    // Draw Signature to Right Side
+    cCtx.drawImage(canvas, 380, 270, 180, 80);
+    cCtx.fillStyle = '#5B4F6B';
+    cCtx.font = '14px sans-serif';
+    cCtx.textAlign = 'center';
+    cCtx.fillText('விண்ணப்பதாரர் கையொப்பம்', 470, 370);
+
+    // Display Result
+    const dataURL = cardCanvas.toDataURL('image/jpeg', 0.95);
+    document.getElementById('generatedCardImage').src = dataURL;
+    document.getElementById('resultPanel').style.display = 'block';
+    document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // Download JPG Trigger
+  document.getElementById('downloadJpgBtn').addEventListener('click', () => {
+    const dataURL = document.getElementById('generatedCardImage').src;
+    if (!dataURL) return;
+    const link = document.createElement('a');
+    link.download = 'padayathirai_card.jpg';
+    link.href = dataURL;
+    link.click();
+  });
+</script>
+
+</body>
+</html>
